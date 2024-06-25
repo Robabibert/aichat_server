@@ -1,7 +1,6 @@
 [package]
 name = "aichat_server"
 version = "0.0.1"
-edition = "2021"
 license = "MIT OR Apache-2.0"
 categories = ["command-line-utilities"]
 keywords = ["chatgpt", "llm", "cli", "gpt", "repl"]
