@@ -5,13 +5,10 @@
   };
   outputs = { self, nixpkgs }:
     let
-      supportedSystems = [ "x86_64-linux" ];
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      pkgsFor = nixpkgs.legacyPackages;
+      system = "x86_64-linux";
     in {
-      packages = forAllSystems (system: {
-        default = pkgsFor.${system}.callPackage ./. { };
-      });
+      packages.${system}.default = pkgs.callPackage ./. { };
+
     };
 }
 
