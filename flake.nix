@@ -15,25 +15,16 @@
 
     in {
       packages.${system}.default = pkgs.callPackage ./. { };
-
       devShells.${system}.default = pkgs.mkShell {
         packages = [
-          pkgs.alsa-lib
           pkgs.cargo-make
-          pkgs.jq
           pkgs.libudev-zero
           pkgs.nodePackages.bash-language-server
-          pkgs.nodePackages.dockerfile-language-server-nodejs
           pkgs.nodePackages.yaml-language-server
-          pkgs.nodePackages_latest.vscode-json-languageserver-bin
           pkgs.openssl
           pkgs.pkg-config
           pkgs.rust-analyzer-unwrapped
-          pkgs.tailwindcss
-          pkgs.tailwindcss-language-server
-          pkgs.leptosfmt
           pkgs.taplo
-          pkgs.trunk
           pkgs.sccache
 
           toolchain
