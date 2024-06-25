@@ -15,25 +15,16 @@
 
     in {
       packages.${system}.default = pkgs.callPackage ./. { };
-
       devShells.${system}.default = pkgs.mkShell {
         packages = [
-          pkgs.alsa-lib
           pkgs.cargo-make
-          pkgs.jq
           pkgs.libudev-zero
           pkgs.nodePackages.bash-language-server
-          pkgs.nodePackages.dockerfile-language-server-nodejs
           pkgs.nodePackages.yaml-language-server
-          pkgs.nodePackages_latest.vscode-json-languageserver-bin
           pkgs.openssl
           pkgs.pkg-config
           pkgs.rust-analyzer-unwrapped
-          pkgs.tailwindcss
-          pkgs.tailwindcss-language-server
-          pkgs.leptosfmt
           pkgs.taplo
-          pkgs.trunk
           pkgs.sccache
 
           toolchain
@@ -47,5 +38,22 @@
         shellHook = "exec fish";
       };
 
+      nixosModules.aichat_server = { config, pkgs, lib, ... }: {
+        options.services.aichat_server = {
+          enable = lib.mkEnableOption "AI Chat Server";
+        };
+
+        config = lib.mkIf config.services.aichat_server.enable {
+          systemd.services.aichat_server = {
+            description = "AI Chat Server";
+            after = [ "network.target" ];
+            wantedBy = [ "multi-user.target" ];
+            serviceConfig = {
+              ExecStart = "${pkgs.callPackage ./. { }}/bin/aichat_server";
+              Restart = "always";
+            };
+          };
+        };
+      };
     };
 }
