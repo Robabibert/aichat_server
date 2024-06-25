@@ -38,5 +38,22 @@
         shellHook = "exec fish";
       };
 
+      nixosModules.aichat_server = { config, pkgs, lib, ... }: {
+        options.services.aichat_server = {
+          enable = lib.mkEnableOption "AI Chat Server";
+        };
+
+        config = lib.mkIf config.services.aichat_server.enable {
+          systemd.services.aichat_server = {
+            description = "AI Chat Server";
+            after = [ "network.target" ];
+            wantedBy = [ "multi-user.target" ];
+            serviceConfig = {
+              ExecStart = "${pkgs.callPackage ./. { }}/bin/aichat_server";
+              Restart = "always";
+            };
+          };
+        };
+      };
     };
 }
